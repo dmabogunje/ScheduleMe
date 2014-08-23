@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+    <!--
+        Overflow by HTML5 UP
+        html5up.net | @n33co
+        Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+    -->
+
+    <html>
+
+        <head>
+
+            <title>Connect 2 Company</title>
+            <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+            <meta name="description" content="" />
+            <meta name="keywords" content="" />
+            <!--[if lte IE 8]>
+                <script src="/resources/schedule/css/ie/html5shiv.js"></script>
+            <![endif]-->
+            <script src="/resources/schedule/js/jquery.min.js"></script>
+            <script src="/resources/schedule/js/jquery.scrolly.min.js"></script>
+            <script src="/resources/schedule/js/jquery.poptrox.min.js"></script>
+            <script src="/resources/schedule/js/skel.min.js"></script>
+            <script src="/resources/schedule/js/init.js"></script>
+            <script src="/resources/schedule/js/w2ui-1.4.1.min.js"></script>
+            <noscript>
+                <link rel="stylesheet" th:href="@{/resources/schedule/css/skel.css}" />
+                <link rel="stylesheet" th:href="@{/resources/schedule/css/style.css}" />
+            </noscript>
+            <link rel="stylesheet" th:href="@{/resources/schedule/css/w2ui-1.4.1.min.css}" />
+            <!--[if lte IE 8]>
+                <link rel="stylesheet" th:href="@{/resources/schedule/css/ie/v8.css}" />
+            <![endif]-->
+            <script>
+                $(window).load(function() {
+                    $("body").fadeIn(100);
+                });
+            </script>
+
+        </head>
+
+        <body style="display:none">
+
+            <!-- Header -->
+            <section id="header">
+
+                <header>
+                    <h1 th:utext="${clientName}"/>
+                    <p>Powered By Connect2Company</p>
+                </header>
+
+                <footer>
+                    <a href="#banner" class="button style2 scrolly scrolly-centered">Continue</a>
+                </footer>
+
+            </section>
+
+            <!-- Banner -->
+            <section id="banner">
+
+                <header>
+                    <h2>Welcome</h2>
+                </header>
+
+                <p th:utext="${welcomeMessage}"/>
+
+                <footer>
+                    <a href="#form" class="button style2 scrolly">Schedule an appointment</a>
+                </footer>
+
+            </section>
+
+            <!-- Contact -->
+            <article class="container box style3" id="form">
+
+                <header>
+                    <h2>Schedule Appointment</h2>
+                    <p th:utext="${instructions}"/>
+                </header>
+
+                <form method="post" th:action="@{/scheduleAppointment}" th:object="${scheduleAppointment}">
+
+                    <div class="row half">
+                        <div class="6u"><input type="text" class="text" name="name" placeholder="Name" th:field="*{name}"/></div>
+                        <div class="6u"><input type="text" class="text" name="phone" placeholder="Phone" th:field="*{phone}"/></div>
+                    </div>
+
+                    <div class="row half">
+                        <div class="12u"><input type="text" class="text" name="email" placeholder="Email" th:field="*{email}"/></div>
+                    </div>
+
+                    <div class="row half">
+                        <div class="6u"><input type="text" class="text" name="date" id="field-date" placeholder="Date" th:field="*{date}"/></div>
+                        <div class="6u"><input type="text" class="text" name="time" id="field-time" placeholder="Time" th:field="*{time}"/></div>
+                    </div>
+
+                    <div class="row half">
+                        <div class="12u">
+                            <select class="text" name="category" th:field="*{category}">
+                                <option th:value="category" disabled="disabled" selected="selected">Category</option>
+                                <option  th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row half">
+                        <div class="12u">
+                            <textarea name="details" placeholder="Details" th:field="*{details}"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="12u">
+                            <ul class="actions">
+                                <li><input type="submit" value="Schedule" /></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="companyId" th:value="${companyId}"/>
+
+                </form>
+
+            </article>
+
+            <script>
+                var month = (new Date()).getMonth() + 1;
+                var year  = (new Date()).getFullYear();
+                var categories = ['Consultation', 'Procedure', 'Billing', 'Routine'];
+                $('#field-list').w2field('list', { items: categories });
+                $('#field-date').w2field('date', { format: 'm/d/yyyy', blocked: [ month+'/12/2014',month+'/13/2014',month+'/14/' + year]});
+                $('#field-time').w2field('time', { format: 'h12', start: '8:00 am', end: '4:30 pm' });
+            </script>
+
+        </body>
+
+    </html>
